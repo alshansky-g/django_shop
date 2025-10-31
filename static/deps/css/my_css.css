@@ -1,4 +1,9 @@
+html {
+  height: 100%;
+}
 body {
+  display: flex;
+  flex-direction: column;
   background-image: url("../images/bg-image.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
