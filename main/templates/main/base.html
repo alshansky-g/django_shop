@@ -88,27 +88,11 @@
                 <img class="mx-1" src="{% static 'deps/icons/grid-fill.svg' %}" alt="Catalog Icon" width="16" height="16" />
               </button>
               <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Все товары</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Кухня</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Спальня</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Гостиная</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Офис</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Фурнитура</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">Декор</a>
-                </li>
+                {% for cat in categories %}
+                  <li>
+                    <a class="dropdown-item text-white" href="{% url 'catalog:index' %}">{{ cat.name }}</a>
+                  </li>
+                {% endfor %}
               </ul>
             </div>
             <!-- Значок корзины, вызывает модальное окно -->
@@ -181,15 +165,20 @@
             <div class="col-lg-10">
               <!-- Контент на странице -->
               {% block content %}
+
               {% endblock %}
             </div>
           </div>
         </div>
       </section>
     </main>
-    {% block footer %}
-
-    {% endblock %}
+    <footer class="py-4 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">
+          Copyright &copy; Alshansky-G Studio {% now 'Y' %}
+        </p>
+      </div>
+    </footer>
     <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static 'deps/js/jquery-events.js' %}"></script>
     <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>

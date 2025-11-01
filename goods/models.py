@@ -12,6 +12,9 @@ class Category(models.Model):
         verbose_name = 'Категорию'
         verbose_name_plural = 'Категории'
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
@@ -24,7 +27,7 @@ class Product(models.Model):
         default=Decimal(0.00), max_digits=7, decimal_places=2, verbose_name='Цена'
     )
     discount = models.DecimalField(
-        default=Decimal(0.00), max_digits=7, decimal_places=2, verbose_name='Скидка в %'
+        default=Decimal(0.00), max_digits=4, decimal_places=2, verbose_name='Скидка в %'
     )
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, verbose_name='Категория')
@@ -33,3 +36,6 @@ class Product(models.Model):
         db_table = 'products'
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
+
+    def __str__(self) -> str:
+        return self.name
