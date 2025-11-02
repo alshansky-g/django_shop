@@ -43,5 +43,7 @@ class Product(models.Model):
     def show_id(self):
         return f'{self.id:05}'
 
-    def price_with_discount(self):
-        return round(self.price * (1 - self.discount / 100), 2)
+    def actual_price(self):
+        if self.discount:
+            return round(self.price * (1 - self.discount / 100), 2)
+        return self.price
