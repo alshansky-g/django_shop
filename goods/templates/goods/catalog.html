@@ -1,4 +1,7 @@
-{% extends 'main/base.html' %} {% load static %} {% block content %}
+{% extends 'main/base.html' %}
+{% load static %}
+{% load goods_tags %}
+{% block content %}
   <div class="row">
     <!-- Форма фильтров -->
     <div class="dropdown mb-2">
@@ -27,7 +30,8 @@
       </form>
     </div>
     <!-- Карта товара -->
-    {% for item in goods %}
+    {% tag_products as products %}
+    {% for item in products %}
       <div class="col-lg-4 col-md-6 p-4">
         <div class="card border-primary rounded custom-shadow">
           {% if item.image %}
