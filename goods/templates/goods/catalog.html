@@ -30,20 +30,25 @@
     {% for item in goods %}
       <div class="col-lg-4 col-md-6 p-4">
         <div class="card border-primary rounded custom-shadow">
-          <img src="{% static item.image %}" class="card-img-top" alt="..." />
+          {% if item.image %}
+            <img src="{{ item.image.url }}" class="card-img-top" alt="..." />
+          {% else %}
+            <img src="{% static 'deps/images/Not found image.png' %}" class="card-img-top" alt="..." />
+          {% endif %}
           <div class="card-body">
             <a href="#"><p class="card-title">{{ item.name }}</p></a>
             <p class="card-text text-truncate">{{ item.description }}</p>
-            <p class="product_id">id: 02265</p>
+            <p class="product_id">id: {{ item.show_id }}</p>
             <div class="d-flex justify-content-between">
-              {% comment %} <p>
-                <s>{{ item.price }}</s> $
-              </p>
+              {% if item.discount %}
+                <p>
+                  <s>{{ item.price_with_discount }} $</s>
+                </p>
+                <span class="badge bg-warning text-dark">Скидка {{ item.discount }} %</span>
+              {% endif %}
               <p>
-                <strong>{{ item.price}} $</strong>
+                <strong>{{ item.price }}</strong> $
               </p>
-              <span class="badge bg-warning text-dark">Скидка 10.00 %</span> {% endcomment %}
-               <p><strong>{{ item.price }} $</strong></p>
               <a href="#" class="btn"><img class="mx-1" src="{% static 'deps/icons/cart-plus.svg' %}" alt="Catalog Icon" width="32" height="32" /></a>
             </div>
           </div>
