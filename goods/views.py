@@ -3,9 +3,14 @@ from django.shortcuts import render
 from goods.models import Product
 
 
-def catalog(request):
+def catalog(request, category_slug):
+    if category_slug == 'all':
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category__slug=category_slug)
     context = {
         'title': 'Home - Каталог',
+        'products': products
     }
     return render(request, 'goods/catalog.html', context=context)
 
