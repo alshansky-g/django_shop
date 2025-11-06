@@ -101,8 +101,7 @@
                        href="{% if products.has_previous %}?page={{ products.previous_page_number }}{% endif %}">Пред.</a>
                 </li>
                 {% for page in products.paginator.page_range %}
-                    {% if page >=
-                        products.number|add:-2 and page <= products.number|add:2 %}
+                    {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
                         <li class="page-item {% if products.number == page %}active{% endif %}">
                             <a class="page-link" href="?page={{ page }}">{{ page }}</a>
                         </li>
