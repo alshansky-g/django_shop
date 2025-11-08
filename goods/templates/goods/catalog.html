@@ -67,9 +67,21 @@
                     {% endif %}
                     <div class="card-body">
                         <a href="{% url 'catalog:product' item.slug %}">
-                            <p class="card-title">{{ item.name }}</p>
+                            <p class="card-title">
+                                {% if item.headline %}
+                                    {{ item.headline|safe }}
+                                {% else %}
+                                    {{ item.name }}
+                                {% endif %}
+                            </p>
                         </a>
-                        <p class="card-text">{{ item.description|truncatechars:50 }}</p>
+                        <p class="card-text">
+                            {% if item.bodyline %}
+                                {{ item.bodyline|safe|truncatechars:100 }}
+                            {% else %}
+                                {{ item.description|truncatechars:50 }}
+                            {% endif %}
+                        </p>
                         <p class="product_id">id: {{ item.show_id }}</p>
                         <div class="d-flex justify-content-between">
                             {% if item.discount %}
