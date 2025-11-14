@@ -109,6 +109,7 @@ ignore = [
     "S404",    # subprocess import no longer suspicious
     "INP001",  # lack of __init__.py in packages
     "RUF001",  # ambiguous cyrillic symbols
+    "COM812",  # no trailing comma
     # "E501",  # Pycodestyle - line too long
 ]
 exclude = ["manage.py", "**/migrations/**"]
