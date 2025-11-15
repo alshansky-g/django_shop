@@ -99,7 +99,7 @@
                             <input class="form-control me-2"
                                    type="search"
                                    name="q"
-                                   placeholder="Search"
+                                   placeholder="Что ищем?"
                                    aria-label="Search" />
                             <button class="btn btn-outline-success text-white" type="submit">Поиск</button>
                         </form>
@@ -236,6 +236,7 @@
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10">
                             <!-- Контент на странице -->
+                            {% include "includes/notifications.html" %}
                             {% block content %}
                             {% endblock content %}
                         </div>
