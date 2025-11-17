@@ -55,45 +55,45 @@
             </form>
         </div>
         <!-- Карта товара -->
-        {% for item in products %}
+        {% for product in products %}
             <div class="col-lg-4 col-md-6 p-4">
                 <div class="card border-primary rounded custom-shadow">
-                    {% if item.image %}
-                        <img src="{{ item.image.url }}" class="card-img-top" alt="..." />
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="..." />
                     {% else %}
                         <img src="{% static 'deps/images/Not found image.png' %}"
                              class="card-img-top"
                              alt="..." />
                     {% endif %}
                     <div class="card-body">
-                        <a href="{% url 'catalog:product' item.slug %}">
+                        <a href="{% url 'catalog:product' product.slug %}">
                             <p class="card-title">
-                                {% if item.headline %}
-                                    {{ item.headline|safe }}
+                                {% if product.headline %}
+                                    {{ product.headline|safe }}
                                 {% else %}
-                                    {{ item.name }}
+                                    {{ product.name }}
                                 {% endif %}
                             </p>
                         </a>
                         <p class="card-text">
-                            {% if item.bodyline %}
-                                {{ item.bodyline|safe|truncatechars:100 }}
+                            {% if product.bodyline %}
+                                {{ product.bodyline|safe|truncatechars:100 }}
                             {% else %}
-                                {{ item.description|truncatechars:50 }}
+                                {{ product.description|truncatechars:50 }}
                             {% endif %}
                         </p>
-                        <p class="product_id">id: {{ item.show_id }}</p>
+                        <p class="product_id">id: {{ product.show_id }}</p>
                         <div class="d-flex justify-content-between">
-                            {% if item.discount %}
+                            {% if product.discount %}
                                 <p>
-                                    <s>{{ item.actual_price }} $</s>
+                                    <s>{{ product.actual_price }} $</s>
                                 </p>
-                                <span class="badge bg-warning text-dark">Скидка {{ item.discount }} %</span>
+                                <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
                             {% endif %}
                             <p>
-                                <strong>{{ item.price }}</strong> $
+                                <strong>{{ product.price }}</strong> $
                             </p>
-                            <a href="#" class="btn">
+                            <a href="{% url "cart:cart_add" product.slug %}" class="btn">
                                 <img class="mx-1"
                                      src="{% static 'deps/icons/cart-plus.svg' %}"
                                      alt="Catalog Icon"

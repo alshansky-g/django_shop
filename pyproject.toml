@@ -73,8 +73,6 @@ select = [
     "TC",    # Flake8-type-checking – proper import of typing in type checks
     "INT",   # Flake8-gettext – checks for proper internationalization usage
     "ARG",   # Flake8-unused-arguments – flags unused function arguments
-    "TD",    # Flake8-todos – flags TODO comments
-    "FIX",   # Flake8-fixme – flags FIXME comments
     "PD",    # Pandas-vet – checks pandas-specific code practices
     "PGH",   # Pygrep-hooks – custom grep hooks for linting
     "PL",    # Pylint – integration with Pylint conventions
@@ -86,6 +84,8 @@ select = [
     "PERF",  # Perflint – performance-related checks
     "FURB",  # Refurb – rules for code refurbishment
     "RUF",   # Ruff-specific rules – additional Ruff checks
+    # "TD",    # Flake8-todos – flags TODO comments
+    # "FIX",   # Flake8-fixme – flags FIXME comments
     # "S",     # Flake8-bandit – security issues
     # "ANN",  # Flake8-annotations – enforces type annotation style
     # "CPY",  # Flake8-copyright – copyright header checks
