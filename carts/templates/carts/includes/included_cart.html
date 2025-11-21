@@ -1,6 +1,4 @@
 {% load static %}
-{% load carts_tags %}
-{% user_carts request as carts %}
 <div class="card mb-3 text-bg-light shadow-lg">
     {% for cart in carts %}
         <div class="card-header">
@@ -13,14 +11,14 @@
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <button type="button"
-                                        class="btn btn-dark btn-sm decrement"
+                                        class="btn btn-dark btn-sm decrement mt-1"
                                         data-cart-id=""
                                         data-cart-change-url="">-</button>
                             </span>
                             <input type="text" class="form-control number" value="{{ cart.quantity }}" readonly />
                             <span class="input-group-btn">
                                 <button type="button"
-                                        class="btn btn-dark btn-sm increment"
+                                        class="btn btn-dark btn-sm increment mt-1"
                                         data-cart-id=""
                                         data-cart-change-url="">+</button>
                             </span>
