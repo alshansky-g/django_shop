@@ -31,9 +31,9 @@
                         <strong>{{ cart.products_price }} $</strong>
                     </div>
                     <div class="col p-0">
-                        <a href="{% url "cart:cart_remove" 3 %}"
+                        <a href="{% url "cart:cart_remove" cart.id %}"
                            class="remove-from-cart"
-                           data-cart-id=""> <!--TODO: cart_remove параметр-заглушка-->
+                           data-cart-id="">
                             <img class="mx-1"
                                  src="{% static 'deps/icons/trash3-fill.svg' %}"
                                  alt="Catalog Icon"
