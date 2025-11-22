@@ -15,7 +15,10 @@
                                         data-cart-id=""
                                         data-cart-change-url="">-</button>
                             </span>
-                            <input type="text" class="form-control number" value="{{ cart.quantity }}" readonly />
+                            <input type="text"
+                                   class="form-control number"
+                                   value="{{ cart.quantity }}"
+                                   readonly />
                             <span class="input-group-btn">
                                 <button type="button"
                                         class="btn btn-dark btn-sm increment mt-1"
@@ -33,7 +36,8 @@
                     <div class="col p-0">
                         <a href="{% url "cart:cart_remove" %}"
                            class="remove-from-cart"
-                           data-cart-id="">
+                           data-cart-id="{{ cart.id }}">
+                            {% csrf_token %}
                             <img class="mx-1"
                                  src="{% static 'deps/icons/trash3-fill.svg' %}"
                                  alt="Catalog Icon"

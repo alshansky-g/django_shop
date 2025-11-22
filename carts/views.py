@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from carts.models import Cart
 from carts.utils import get_user_carts
 from goods.models import Product
+from logging_config import logger
 
 
 def cart_add(request):
@@ -29,12 +30,26 @@ def cart_add(request):
     return JsonResponse(response_data)
 
 
-def cart_change(request, cart_id):
-    ...
+def cart_change(request):
     # cart = Cart.objects.get(id=cart_id)
-    # return redirect(request.META['HTTP_REFERER'])
-
-
-def cart_remove(request, cart_id):
-    Cart.objects.get(id=cart_id).delete()
     return redirect(request.META['HTTP_REFERER'])
+
+
+def cart_remove(request):
+    logger.debug('Я тут')
+    cart_id = request.POST.get('cart_id')
+    cart = Cart.objects.get(id=cart_id)
+    logger.info('Корзина: {}', cart)
+    quantity = cart.quantity
+    cart.delete()
+
+    user_cart = get_user_carts(request)
+    cart_items_html = render_to_string(
+        'carts/includes/included_cart.html', {'carts': user_cart}, request=request
+    )
+    response_data = {
+        'message': 'Товар удалён из корзины',
+        'cart_items_html': cart_items_html,
+        'quantity_deleted': quantity,
+    }
+    return JsonResponse(response_data)
