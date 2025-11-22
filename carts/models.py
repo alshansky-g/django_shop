@@ -16,7 +16,7 @@ class CartQuerySet(models.QuerySet):
 
 class Cart(models.Model):
     user = models.ForeignKey(
-        to=User, on_delete=models.CASCADE, verbose_name='Пользователь', blank=True
+        to=User, on_delete=models.CASCADE, verbose_name='Пользователь', blank=True, null=True
     )
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
@@ -31,9 +31,8 @@ class Cart(models.Model):
         verbose_name_plural = 'Корзина'
 
     def __str__(self):
-        return (
-            f'Корзина {self.user.username}, Товар: {self.product.name}, Количество: {self.quantity}'
-        )
+        return f'Корзина {self.user.username if self.user else self.session_key}, \
+              Товар: {self.product.name}, Количество: {self.quantity}'
 
     def products_price(self):
         return round(self.product.actual_price() * self.quantity, 2)
