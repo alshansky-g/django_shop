@@ -12,8 +12,8 @@
                             <span class="input-group-btn">
                                 <button type="button"
                                         class="btn btn-dark btn-sm decrement mt-1"
-                                        data-cart-id=""
-                                        data-cart-change-url="">-</button>
+                                        data-cart-id="{{ cart.id }}"
+                                        data-cart-change-url="{% url "cart:cart_change" %}">{% csrf_token %}-</button>
                             </span>
                             <input type="text"
                                    class="form-control number"
@@ -22,8 +22,8 @@
                             <span class="input-group-btn">
                                 <button type="button"
                                         class="btn btn-dark btn-sm increment mt-1"
-                                        data-cart-id=""
-                                        data-cart-change-url="">+</button>
+                                        data-cart-id="{{ cart.id }}"
+                                        data-cart-change-url="{% url "cart:cart_change" %}">{% csrf_token %}+</button>
                             </span>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 <div class="card mb-3 shadow-lg">
     <div class="card-footer">
         <p class="float-left">
-            Итого <strong>{{ carts.total_quantity }}</strong> товар(а) на сумму
+            Всего товаров: <strong>{{ carts.total_quantity }}</strong> на сумму
         </p>
         <h4 class="float-left">
             <strong>{{ carts.total_price }} $</strong>

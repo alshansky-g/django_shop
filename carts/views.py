@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
 from carts.models import Cart
@@ -31,8 +30,23 @@ def cart_add(request):
 
 
 def cart_change(request):
-    # cart = Cart.objects.get(id=cart_id)
-    return redirect(request.META['HTTP_REFERER'])
+    cart_id = request.POST.get('cart_id')
+    quantity = request.POST.get('quantity')
+
+    cart = Cart.objects.get(id=cart_id)
+    cart.quantity = quantity
+    cart.save()
+
+    user_cart = get_user_carts(request)
+    cart_items_html = render_to_string(
+        'carts/includes/included_cart.html', {'carts': user_cart}, request=request
+    )
+    response_data = {
+        'message': 'Количество изменено',
+        'cart_items_html': cart_items_html,
+        'quantity': quantity,
+    }
+    return JsonResponse(response_data)
 
 
 def cart_remove(request):
