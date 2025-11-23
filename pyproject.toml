@@ -110,6 +110,7 @@ ignore = [
     "INP001",  # lack of __init__.py in packages
     "RUF001",  # ambiguous cyrillic symbols
     "COM812",  # no trailing comma
+    "RUF012",
     # "E501",  # Pycodestyle - line too long
 ]
 exclude = ["manage.py", "**/migrations/**"]

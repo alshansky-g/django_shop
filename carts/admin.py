@@ -2,4 +2,22 @@ from django.contrib import admin
 
 from carts.models import Cart
 
-admin.site.register(Cart)
+
+class UserCartAdmin(admin.TabularInline):
+    model = Cart
+    fields = ['product', 'quantity', 'created_at']
+    search_fields = ['product', 'quantity', 'created_at']
+    readonly_fields = ['created_at']
+    extra = 1
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ['user_display', 'product', 'quantity', 'created_at']
+    list_filter = ['created_at', 'user', 'product']
+
+    @staticmethod
+    def user_display(obj):
+        if obj.user:
+            return str(obj.user)
+        return 'Анонимный пользователь'

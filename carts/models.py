@@ -31,8 +31,9 @@ class Cart(models.Model):
         verbose_name_plural = 'Корзина'
 
     def __str__(self):
-        return f'Корзина {self.user.username if self.user else self.session_key}, \
-              Товар: {self.product.name}, Количество: {self.quantity}'
+        if self.user:
+            return f'{self.product.name}, Количество: {self.quantity}'
+        return f'Анонимная корзина, {self.product.name}, Количество: {self.quantity}'
 
     def products_price(self):
         return round(self.product.actual_price() * self.quantity, 2)
