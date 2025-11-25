@@ -77,9 +77,6 @@
                                        aria-expanded="false">Мой профиль</a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item text-white" href="carts/cart.html">Корзина</a>
-                                        </li>
-                                        <li>
                                             <a class="dropdown-item text-white" href="{% url "user:profile" %}">Личный кабинет</a>
                                         </li>
                                         {% if user.is_staff %}

@@ -10,6 +10,7 @@ class User(AbstractUser):
         verbose_name='Аватар',
     )
     phone_number = models.CharField(max_length=10, blank=True, default='')
+    total_orders = models.PositiveIntegerField(verbose_name='Всего заказов', default=0)
 
     class Meta:
         db_table = 'users'
