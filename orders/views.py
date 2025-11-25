@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.forms import ValidationError
 from django.shortcuts import redirect, render
@@ -7,6 +8,7 @@ from orders.forms import CreateOrderForm
 from orders.services import transaction_processed
 
 
+@login_required
 def create_order(request):
     if request.method == 'POST':
         form = CreateOrderForm(data=request.POST)
@@ -26,8 +28,5 @@ def create_order(request):
         }
         form = CreateOrderForm(initial=initial)
 
-    context = {
-        'title': 'Home - Оформление заказа',
-        'form': form,
-    }
+    context = {'title': 'Home - Оформление заказа', 'form': form, 'order': True}
     return render(request, 'orders/create_order.html', context=context)
