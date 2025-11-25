@@ -16,8 +16,9 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ['user_display', 'product', 'quantity', 'created_at']
     list_filter = ['created_at', 'user', 'product']
 
-    @staticmethod
-    def user_display(obj):
+    def user_display(self, obj):
         if obj.user:
             return str(obj.user)
         return 'Анонимный пользователь'
+
+    user_display.short_description = 'Пользователь'

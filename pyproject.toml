@@ -111,6 +111,7 @@ ignore = [
     "RUF001",  # ambiguous cyrillic symbols
     "COM812",  # no trailing comma
     "RUF012",
+    "PLR6301",
     # "E501",  # Pycodestyle - line too long
 ]
 exclude = ["manage.py", "**/migrations/**"]
