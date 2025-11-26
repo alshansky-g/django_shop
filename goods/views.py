@@ -1,5 +1,3 @@
-from django.core.paginator import Paginator
-from django.shortcuts import get_list_or_404, render
 from django.views.generic import DetailView, ListView
 
 from goods.models import Product
@@ -9,6 +7,7 @@ from goods.utils import q_search
 class CatalogView(ListView):
     model = Product
     template_name = 'goods/catalog.html'
+    queryset = Product.objects.filter(quantity__gt=0)
     context_object_name = 'products'
     paginate_by = 3
 
@@ -37,38 +36,9 @@ class CatalogView(ListView):
         context.update({
             'title': 'Home - Каталог',
             'slug_url': self.kwargs.get('category_slug'),
+            'total_products': context['page_obj'].paginator.count,
         })
         return context
-
-
-def catalog(request, category_slug: str | None = None):
-    page = request.GET.get('page', 1)
-    on_sale = request.GET.get('on_sale', None)
-    order_by = request.GET.get('order_by', None)
-    query = request.GET.get('q', None)
-
-    if category_slug == 'all':
-        products = Product.objects.all()
-    elif query:
-        products = q_search(query)
-    else:
-        products = Product.objects.filter(category__slug=category_slug)
-
-    if on_sale:
-        products = products.filter(discount__gt=0)
-    if order_by and order_by != 'default':
-        products = products.order_by(order_by)
-
-    products = get_list_or_404(products)
-
-    paginator = Paginator(products, 3)
-    current_page = paginator.get_page(page)
-    context = {
-        'title': 'Home - Каталог',
-        'products': current_page,
-        'slug_url': category_slug,
-    }
-    return render(request, 'goods/catalog.html', context=context)
 
 
 class ProductView(DetailView):

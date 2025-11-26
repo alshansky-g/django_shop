@@ -1,36 +1,36 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from carts.models import Cart
 from orders.models import Order, OrderItem
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 
 
-def login(request):
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
-            user = auth.authenticate(username=username, password=password)
-            session_key = request.session.session_key
-            if user:
-                auth.login(request, user)
-                messages.success(request, f'Добро пожаловать, {username}.')
-                Cart.objects.filter(session_key=session_key).update(user=user)
+class UserLoginView(LoginView):
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
 
-                if request.POST.get('next'):
-                    return HttpResponseRedirect(request.POST.get('next'))
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.get_user()
+        Cart.objects.filter(session_key=session_key).update(user=user)
+        messages.success(self.request, f'Добро пожаловать, {user.first_name or user.username}.')
+        return super().form_valid(form)
 
-                return HttpResponseRedirect(reverse('main:index'))
-    else:
-        form = UserLoginForm()
-    context = {'title': 'Home - Авторизация', 'form': form}
-    return render(request, 'users/login.html', context)
+    def get_success_url(self):
+        if redirect_page := self.request.POST.get('next'):
+            return redirect_page
+        return reverse_lazy('main:index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Home - Авторизация'})
+        return context
 
 
 def registration(request):

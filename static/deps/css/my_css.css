@@ -41,3 +41,17 @@ body {
   border-radius: 15px;
   font-size: 0.7rem;
 }
+.results-counter {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #080808c8;
+  padding: 12px 25px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-left: 30%;
+  text-align: center;
+  border: 1px solid #dfe6e9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}

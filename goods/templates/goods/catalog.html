@@ -13,6 +13,7 @@
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">Фильтры</button>
+                <h1 class="results-counter">Всего результатов: {{ total_products }}</h1>
                 <form action="{% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url 'catalog:index' slug_url %}{% endif %}"
                       method="get"
                       class="dropdown-menu bg-dark"
@@ -136,6 +137,6 @@
             </ul>
         </nav>
     {% else %}
-        <h1>В этой категории сейчас нет товаров 😢</h1>
+        <h1>Ничего не найдено 😢</h1>
     {% endif %}
 {% endblock content %}
