@@ -5,6 +5,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView
 
 from carts.models import Cart
 from orders.models import Order, OrderItem
@@ -18,6 +19,7 @@ class UserLoginView(LoginView):
     def form_valid(self, form):
         session_key = self.request.session.session_key
         user = form.get_user()
+        auth.login(self.request, user)
         Cart.objects.filter(session_key=session_key).update(user=user)
         messages.success(self.request, f'Добро пожаловать, {user.first_name or user.username}.')
         return super().form_valid(form)
@@ -33,23 +35,26 @@ class UserLoginView(LoginView):
         return context
 
 
-def registration(request):
-    session_key = request.session.session_key
-    if request.method == 'POST':
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.instance
-            Cart.objects.filter(session_key=session_key).update(user=user)
-            auth.login(request, user)
-            messages.success(
-                request, f'{user.username}, вы успешно зарегистрировались и вошли в аккаунт.'
-            )
-            return HttpResponseRedirect(reverse('main:index'))
-    else:
-        form = UserRegistrationForm()
-    context = {'title': 'Home - Регистрация', 'form': form}
-    return render(request, 'users/registration.html', context)
+class UserRegistrationView(CreateView):
+    template_name = 'users/registration.html'
+    form_class = UserRegistrationForm
+    success_url: str = reverse_lazy('user:profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Home - Регистрация'})
+        return context
+
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.save()
+        auth.login(self.request, user)
+        Cart.objects.filter(session_key=session_key).update(user=user)
+        messages.success(
+            self.request,
+            f'{user.first_name or user.username}, вы успешно зарегистрировались и вошли в аккаунт.',
+        )
+        return HttpResponseRedirect(self.success_url)
 
 
 @login_required
@@ -76,7 +81,9 @@ def profile(request):
 
 @login_required
 def logout(request):
-    messages.success(request, f'{request.user.username}, вы вышли из аккаунта.')
+    messages.success(
+        request, f'{request.user.first_name or request.user.username}, вы вышли из аккаунта.'
+    )
     auth.logout(request)
     return redirect(reverse('main:index'))
 
