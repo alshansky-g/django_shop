@@ -1,13 +1,9 @@
-from typing import TYPE_CHECKING
-
+from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.urls import reverse
 
 from carts.models import Cart
 from carts.utils import get_user_carts
-
-if TYPE_CHECKING:
-    from django.http import HttpRequest
 
 
 class CartMixin:
