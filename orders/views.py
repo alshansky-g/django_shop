@@ -1,32 +1,38 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.forms import ValidationError
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import FormView
 
 from orders.forms import CreateOrderForm
 from orders.services import transaction_processed
 
 
-@login_required
-def create_order(request):
-    if request.method == 'POST':
-        form = CreateOrderForm(data=request.POST)
-        if form.is_valid():
-            try:
-                with transaction.atomic():
-                    if transaction_processed(request, form):
-                        return redirect('user:profile')
+class CreateOrderView(LoginRequiredMixin, FormView):
+    template_name = 'orders/create_order.html'
+    form_class = CreateOrderForm
+    success_url = reverse_lazy('user:profile')
 
-            except ValidationError as e:
-                messages.success(request, str(e))
-                return redirect('cart:order')
-    else:
-        initial = {
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-        }
-        form = CreateOrderForm(initial=initial)
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['first_name'] = getattr(self.request.user, 'first_name', '')
+        initial['last_name'] = getattr(self.request.user, 'last_name', '')
+        return initial
 
-    context = {'title': 'Home - Оформление заказа', 'form': form, 'order': True}
-    return render(request, 'orders/create_order.html', context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Home - Оформление заказа'
+        context['order'] = True
+        return context
+
+    def form_valid(self, form):
+        try:
+            with transaction.atomic():
+                if transaction_processed(self.request, form):
+                    return redirect('user:profile')
+
+        except ValidationError as e:
+            messages.error(self.request, str(e))
+            return redirect('cart:order')
