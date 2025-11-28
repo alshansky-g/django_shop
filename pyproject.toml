@@ -1,28 +1,19 @@
 [project]
 name = "django-shop"
 version = "0.1.0"
-description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "django>=5.2.8",
-    "django-debug-toolbar>=6.1.0",
-    "djlint>=1.36.4",
-    "ipython>=9.7.0",
     "loguru>=0.7.3",
     "pillow>=12.0.0",
-    "pre-commit>=4.3.0",
     "psycopg>=3.2.12",
     "python-dotenv>=1.2.1",
 ]
 
-[tool.pytest.ini_options]
-addopts = "-vv"
-testpaths = "tests"
-pythonpath = "."
-python_files = ["test_*.py", "*_test.py"]
-python_classes = "Test*"
-python_functions = "test_*"
+[dependency-groups]
+dev = ["django-debug-toolbar>=6.1.0", "djlint>=1.36.4", "pre-commit>=4.5.0"]
+
 
 [tool.ruff]
 line-length = 100
@@ -84,15 +75,6 @@ select = [
     "PERF",  # Perflint – performance-related checks
     "FURB",  # Refurb – rules for code refurbishment
     "RUF",   # Ruff-specific rules – additional Ruff checks
-    # "TD",    # Flake8-todos – flags TODO comments
-    # "FIX",   # Flake8-fixme – flags FIXME comments
-    # "S",     # Flake8-bandit – security issues
-    # "ANN",  # Flake8-annotations – enforces type annotation style
-    # "CPY",  # Flake8-copyright – copyright header checks
-    # "T20",  # Flake8-print – disallows print statements
-    # "Q",    # Flake8-quotes – enforces quote style consistency
-    # "ERA",  # Eradicate – detects commented-out code (potentially dangerous)
-    # "DOC",  # Pydoclint – docstring linting and consistency
 ]
 ignore = [
     "D1",      # Pydocstyle - missing docstring in public module, class, or function
@@ -112,6 +94,5 @@ ignore = [
     "COM812",  # no trailing comma
     "RUF012",
     "PLR6301",
-    # "E501",  # Pycodestyle - line too long
 ]
 exclude = ["manage.py", "**/migrations/**"]
